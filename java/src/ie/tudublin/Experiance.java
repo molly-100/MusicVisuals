@@ -56,74 +56,34 @@ public class Experiance extends PApplet{
 
     public void draw()
     {
+
+        // came up with an idea for an opening this is branch is for our ideas and rough work 
+        
         switch (mode) {
-			case 0://first to play (grace)
+			case 0://Opening :- shooting stars then sycadiics patterns to create the effect of 
+            //someone hallucinating or in a trans with the words welcome to the expereiance appearing
+            //stars shooting then the words welcome to the experiance appear like a start buttton  
 
                
           
                 
                 break;
-        case 1://When you press key 1 (hadassah)
-                float rotationX = 0;
-                float rotationY = 0;
-                float rotationZ = 0;
-                float sphereRadius = 250;
-                int lineCount = 30;
-                int squareSize = 15;
-                int colorChangeRate = 20;
-                int colorTime = 0;
-
-                background(0);
-                translate(width/2, height/2, 0);
-                rotateX(rotationX);
-                rotateY(rotationY);
-                rotateZ(rotationZ);
-                colorTime++;
-                if (colorTime % colorChangeRate == 0) {
-                stroke(random(255), random(255), random(255));
-                }
-                for (int i = 0; i < lineCount; i++) {
-                for (int j = 0; j < lineCount; j++) {
-                    pushMatrix();
-                    float xPos = map(i, 0, lineCount, -sphereRadius, sphereRadius);
-                    float yPos = map(j, 0, lineCount, -sphereRadius, sphereRadius);
-                    translate(xPos, yPos, 0);
-                    float dist = sqrt(sq(xPos) + sq(yPos));
-                    float angle = atan2(yPos, xPos);
-                    float zPos = sqrt(sq(sphereRadius) - sq(dist));
-                    translate(0, 0, zPos);
-                    float rotAngle = map(zPos, 0, sphereRadius, 0, PI);
-                    rotateX(rotAngle);
-                    rotateY(angle + radians(frameCount));
-                    for (int k = 0; k < 4; k++) {
-                    line(-squareSize/2, -squareSize/2, -squareSize/2, squareSize/2);
-                    line(-squareSize/2, squareSize/2, squareSize/2, squareSize/2);
-                    line(squareSize/2, squareSize/2, squareSize/2, -squareSize/2);
-                    line(squareSize/2, -squareSize/2, -squareSize/2, -squareSize/2);
-                    translate(0, 0, squareSize/2);
-                    rotateX(PI/2);
-                    }
-                    popMatrix();
-                }
-                }
-                rotationX += 0.01;
-                rotationY += 0.02;
-                rotationZ += 0.03;
-            
-                strokeWeight(2);
+        case 1:
+                
+              
                     
             break;
 
-        case 2:// when you press key 2 (cece)
+        case 2:
             
 
             break;
 
-        case 3://when you press key 3 (molly)
+        case 3:
 
             break;
 
-        case 4://when you press key 4 (aisha)
+        case 4:
 
             break;
         }
