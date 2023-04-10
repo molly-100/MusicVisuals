@@ -23,9 +23,9 @@ public class idea extends PApplet{
 
 float[] spectrum;
 
-Star[] stars;
+//Star[] stars;
 int numStars = 300;
-int maxSpeed = 20;
+int maxSpeed = 0;
 
 public void keyPressed() {
     if (key >= '0' && key <= '9') {
@@ -67,62 +67,62 @@ public void setup() {
 }
 
 public void draw() {
-  background(0);
-  
-  //((Object) fft).analyze(spectrum);
-  
-  translate(width/2, height/2);
-  
-  for (int i = 0; i < numStars; i++) {
-    Star s = stars[i];
-    s.update();
-    s.show();
-  }
+    background(0);
+
+    // ((Object) fft).analyze(spectrum);
+
+    translate(width / 2, height / 2);
+
+    for (int i = 0; i < numStars; i++) {
+        Star s = stars[i];
+        s.update();
+        s.show();
+    }
 }
 
 class Star {
-  float x, y, z;
-  float pz;
-  float speed;
-  
-  Star() {
-    x = random(-width, width);
-    y = random(-height, height);
-    z = random(width);
-    pz = z;
-    speed = random(1, maxSpeed);
-  }
-  
-  void update() {
-    z = z - speed;
-    
-    if (z < 1) {
-      z = width;
-      x = random(-width, width);
-      y = random(-height, height);
-      pz = z;
+    float x, y, z;
+    float pz;
+    float speed;
+
+    Star() {
+        x = random(-width, width);
+        y = random(-height, height);
+        z = random(width);
+        pz = z;
+        speed = random(1, maxSpeed);
     }
-  }
-  
-  void show() {
-    fill(255);
-    noStroke();
-    
-    float sx = map(x / z, 0, 1, 0, width);
-    float sy = map(y / z, 0, 1, 0, height);
-    
-    float r = map(speed, 1, maxSpeed, 1, 8);
-    
-    ellipse(sx, sy, r, r);
-    
-    float px = map(x / pz, 0, 1, 0, width);
-    float py = map(y / pz, 0, 1, 0, height);
-    
-    stroke(255, 100);
-    line(px, py, sx, sy);
-    
-    pz = z;
-  }
+
+    void update() {
+        z = z - speed;
+
+        if (z < 1) {
+            z = width;
+            x = random(-width, width);
+            y = random(-height, height);
+            pz = z;
+        }
+    }
+
+    void show() {
+        fill(255);
+        noStroke();
+
+        float sx = map(x / z, 0, 1, 0, width);
+        float sy = map(y / z, 0, 1, 0, height);
+
+        float r = map(speed, 1, maxSpeed, 1, 8);
+
+        ellipse(sx, sy, r, r);
+
+        float px = map(x / pz, 0, 1, 0, width);
+        float py = map(y / pz, 0, 1, 0, height);
+
+        stroke(255, 100);
+        line(px, py, sx, sy);
+
+        pz = z;
+    }
 }
 
 }
