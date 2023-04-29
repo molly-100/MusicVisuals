@@ -49,16 +49,29 @@ public class practice extends Visual
         noFill();
         noStroke();
         float amplitude = 0;
+        float[] bands;
         frameRate(50);
 
         calculateAverageAmplitude();
         amplitude = getSmoothedAmplitude();
-        
-        calculateFFT();
 
+        try
+        {
+            calculateFFT();
+        }
+        catch(VisualException e)
+        {
+            e.printStackTrace();
+        }
         calculateFrequencyBands();
+        bands = getSmoothedBands();
     }
 
+}
+
+class Star extends PApplet
+{
+    
 }
 
 
