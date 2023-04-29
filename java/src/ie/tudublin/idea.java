@@ -7,7 +7,7 @@ import ddf.minim.Minim;
 import ddf.minim.analysis.FFT;
 import processing.core.PApplet;
 
-public class idea extends PApplet{
+public class idea extends PApplet{ 
 
     Minim minim;
     AudioPlayer ap;
@@ -42,7 +42,7 @@ public void keyPressed() {
 }
 
 Star[] stars = new Star[500];
-float speed;
+float speed = 50;
 
 
 public void settings()
@@ -60,7 +60,7 @@ public void setup() {
   // ab = ai.mix; 
 
   // And comment the next two lines out
-  ap = minim.loadFile("MusicVisuals/java/data/Victoria_Mon_t_ft_Khalid_-_Experience.mp3", 1024);
+  ap = minim.loadFile("MusicVisuals/java/data/Victoria_Mon_t_ft_Khalid_-_Experience.mp3", 512);
   ap.play();
   ab = ap.mix;
   colorMode(HSB);
@@ -73,19 +73,29 @@ public void setup() {
 
 public void draw() {
 
-    speed = map(mouseX, 0, width, 0, 50);
+    //speed = map(mouseX, 0, width, 0, 50);
 
     background(0);
-
-    // ((Object) fft).analyze(spectrum);
 
     translate(width / 2, height / 2);
 
     for (int i = 0; i < stars.length; i++) {
         stars[i].update();
         stars[i].show();
-      }
+    }
+
+    // Draw the word "experience" in the center of the screen
+    textAlign(CENTER, CENTER);
+    textSize(94);
+    fill(255);
+    text("EXPERIENCE", 0, 0);
+
+    // Move the origin to the center of the screen
+    translate(-width / 2, -height / 2);
+
 }
+
+
 
 class Star {
     float x, y, z;
@@ -110,7 +120,6 @@ class Star {
             pz = z;
         }
     }
-
     void show() {
         fill(255);
         noStroke();
