@@ -71,7 +71,55 @@ public class practice extends Visual
 
 class Star extends PApplet
 {
-    
+    PApplet p;
+    float x;
+    float y;
+    float size;
+    float speed;
+    float height;
+    float width;
+    float rotate_Star;
+    int num_point = 5;
+    Star[] stars;
+    int i = 0;
+
+    Star(PApplet p, float x, float y, float size, float speed, float height, float width, Star[] stars) 
+    {
+        this.p = p;
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.speed = speed;
+        this.height = height;
+        this.width = width;
+        this.rotate_Star = 0;
+        this.stars = stars;
+    }
+
+    void display(float[] bands) 
+    {
+        p.pushMatrix();
+        p.translate(x, y);
+        p.rotate(rotate_Star);
+        p.scale(size/300);
+        p.noStroke();
+
+        p.beginShape();
+
+        for (int i = 0; i < 6; i++) {
+            float angle = TWO_PI * i / 6;
+            float x = cos(angle) * 100;
+            float y = sin(angle) * 100;
+            p.vertex(x, y);
+            angle += TWO_PI / (6 * 2);
+            x = cos(angle) * 50;
+            y = sin(angle) * 50;
+            p.vertex(x, y);
+        }
+        p.endShape();
+        p.popMatrix();
+    }  
+
 }
 
 
