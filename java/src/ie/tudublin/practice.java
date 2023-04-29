@@ -106,19 +106,19 @@ class Star extends PApplet
 
         p.beginShape();
 
-        for (int i = 0; i < 6; i++) {
-            float angle = TWO_PI * i / 6;
+        for (int i = 0; i < num_point; i++) {
+            float angle = TWO_PI * i / num_point;
             float x = cos(angle) * 100;
             float y = sin(angle) * 100;
             p.vertex(x, y);
-            angle += TWO_PI / (6 * 2);
+            angle += TWO_PI / (num_point * 2);
             x = cos(angle) * 50;
             y = sin(angle) * 50;
             p.vertex(x, y);
         }
         p.endShape();
         p.popMatrix();
-    }  
+    }
 
 }
 
