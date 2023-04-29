@@ -1,0 +1,312 @@
+package example;
+
+import processing.core.*;
+
+public class MyVisual extends PApplet {
+
+    float angle = 0;
+
+    public void settings() {
+        size(1024, 768, P3D);
+    }
+
+    public void setup() {
+        colorMode(HSB);
+        background(0);
+    }
+
+    public void draw() {
+        lights();
+        translate(width/2, height/2, 0);
+        rotateY(angle);
+        rotateX(angle * 0.3f);
+        noStroke();
+        fill(255, 255, 255);
+        sphere(200);
+        angle += 0.01;
+    }
+}
+
+////////////////////////////////////////////////////////////////////
+when you extend the PApplet class, you need to create a new Java file that will contain your sketch. This file should have the same name as your class, with the ".java" extension. For example, if your class is called "MySketch", your file should be called "MySketch.java".
+
+
+
+start of code to create spheres that chnage size depending on the amplitude of the frequency.
+
+package ie.tudublin;
+
+import processing.core.PApplet;
+
+public class SphereVisual extends Visual {
+
+    public void settings() {
+        size(800, 800, P3D);
+    }
+
+    public void setup() {
+        startMinim();
+        colorMode(HSB);
+    }
+
+    public void draw() {
+        calculateAverageAmplitude();
+        background(0);
+
+        translate(width / 2, height / 2, -250);
+
+        float[] bands = getSmoothedBands();
+        float radius = 50;
+
+        for (int i = 0; i < bands.length; i++) {
+            float theta = map(i, 0, bands.length, 0, TWO_PI);
+            float x = radius * sin(theta);
+            float y = radius * cos(theta);
+            float z = -radius * cos(theta) * sin(theta);
+
+            float size = 50 + (bands[i] * 300);
+            noStroke();
+            fill(map(i, 0, bands.length, 0, 255), 255, 255);
+            pushMatrix();
+            translate(x, y, z);
+            sphere(size);
+            popMatrix();
+        }
+    }
+
+    public static void main(String[] args) {
+        String[] a = {"MAIN"};
+        SphereVisual sv = new SphereVisual();
+        PApplet.runSketch(a, sv);
+    }
+}
+
+In the setup() method, we call startMinim() to initialize the Minim library. In the draw() method, we first call calculateAverageAmplitude() to calculate the average amplitude of the audio signal. We then set the background to black and translate to the center of the screen.
+
+We then loop through the bands array and map the index to a theta angle that goes from 0 to TWO_PI (a full circle). We then use trigonometry to calculate the x, y, and z coordinates of a point on a sphere with radius radius. We then set the size of the sphere to be 50 + (bands[i] * 300), where bands[i] is the amplitude of the frequency band at index i. This means that the sphere size will increase as the amplitude of the frequency band increases.
+
+Finally, we draw the sphere at the calculated position and size, with a color that is based on the index of the frequency band.
+
+To run the sketch, we call PApplet.runSketch() with an instance of SphereVisual.
+
+
+
+////////////////////////////////////////////////////
+this code only draws spheres at the edge of the screen
+
+void draw() {
+  background(0);
+  calculateFFT();
+  calculateFrequencyBands();
+  calculateAverageAmplitude();
+  stroke(255);
+
+  for (int i = 0; i < bands.length; i++) {
+    float x = map(i, 0, bands.length, 0, width);
+    float y = height / 2;
+    float z = 0;
+
+    // only draw spheres at the edge of the screen
+    if (i == 0 || i == bands.length - 1) {
+      float radius = smoothedBands[i] * 100;
+      pushMatrix();
+      translate(x, y, z);
+      noStroke();
+      fill(255, 255, 0);
+      sphere(radius);
+      popMatrix(); // function from processing library
+    }
+  }
+}
+
+In this version, the if statement checks if the current band is either the first or last one (i.e., at the edge of the screen), and only draws a sphere if that's the case. The sphere's radius is calculated based on the smoothed amplitude of the current band, and the sphere is positioned at the corresponding x and y coordinates on the screen.
+
+
+/////////////////////////////////////////////////////////////////////
+
+modify the code we wrote earlier to draw a color waveform inside the spheres:
+import processing.core.*;
+
+public class SphereVisual extends Visual {
+  
+  float[] lerpedBuffer;
+  int[] colors;
+  
+  int numSpheres = 100;
+  float[] sphereSizes = new float[numSpheres];
+  float[] targetSphereSizes = new float[numSpheres];
+  float sphereRadius;
+  float sphereSpacing;
+  float rotationSpeed = 0.01f;
+  float rotation = 0.0f;
+  
+  public void settings() {
+    fullScreen(P3D);
+  }
+  
+  public void setup() {
+    startMinim();
+    startListening();
+    
+    lerpedBuffer = new float[frameSize];
+    colors = new int[frameSize];
+    for (int i = 0; i < frameSize; i++) {
+      colors[i] = color(random(255), random(255), random(255));
+    }
+    
+    sphereRadius = width / 2.0f;
+    sphereSpacing = sphereRadius / numSpheres;
+    for (int i = 0; i < numSpheres; i++) {
+      targetSphereSizes[i] = 1.0f;
+    }
+  }
+  
+  public void draw() {
+    background(0);
+    
+    calculateFFT();
+    calculateFrequencyBands();
+    calculateAverageAmplitude();
+    
+    float rotationIncrement = amplitude * rotationSpeed;
+    rotation += rotationIncrement;
+    
+    for (int i = 0; i < frameSize; i++) {
+      float bufferVal = ab.get(i);
+      lerpedBuffer[i] = lerp(lerpedBuffer[i], bufferVal, 0.1f);
+    }
+    
+    float angleStep = TWO_PI / numSpheres;
+    for (int i = 0; i < numSpheres; i++) {
+      float angle = i * angleStep;
+      float x = cos(angle) * sphereRadius;
+      float y = sin(angle) * sphereRadius;
+      float z = 0;
+      
+      pushMatrix();
+      translate(width/2, height/2, 0);
+      translate(x, y, z);
+      rotateY(rotation);
+      
+      float sphereSize = sphereSizes[i];
+      float targetSphereSize = targetSphereSizes[i];
+      sphereSize = lerp(sphereSize, targetSphereSize, 0.1f);
+      sphereSizes[i] = sphereSize;
+      
+      stroke(colors[i % frameSize]);
+      noFill();
+      strokeWeight(2);
+      
+      beginShape();
+      for (int j = 0; j < frameSize; j++) {
+        float bufferValue = lerpedBuffer[j];
+        float x2 = cos(j * angleStep) * (sphereRadius + sphereSize + bufferValue * 200);
+        float y2 = sin(j * angleStep) * (sphereRadius + sphereSize + bufferValue * 200);
+        stroke(colors[j]);
+        vertex(x2, y2, 0);
+      }
+      endShape(CLOSE);
+      
+      popMatrix();
+    }
+    
+    if (ap != null && ap.isPlaying()) {
+      for (int i = 0; i < numSpheres; i++) {
+        targetSphereSizes[i] = map(bands[i], 0, 200, 1, 100);
+      }
+    }
+  }
+}
+//////////////////////////////////////////////////////////////////
+another way to do this
+
+import processing.core.PApplet;
+import processing.core.PVector;
+import ddf.minim.AudioBuffer;
+import ddf.minim.Minim;
+
+public class ColorWaveform extends PApplet {
+
+  private int numSpheres = 20;
+  private float radius = 200;
+  private PVector[] positions = new PVector[numSpheres];
+
+  private int frameSize = 512;
+  private int sampleRate = 44100;
+
+  private float[] bands;
+  private float[] smoothedBands;
+  private float[] colors;
+  private float maxAmplitude;
+  private float[] waveform;
+
+  private Minim minim;
+  private AudioBuffer ab;
+
+  public void settings() {
+    size(800, 800, P3D);
+  }
+
+  public void setup() {
+    // Initialize sphere positions
+    for (int i = 0; i < numSpheres; i++) {
+      float angle = map(i, 0, numSpheres, 0, TWO_PI);
+      float x = cos(angle) * radius;
+      float y = sin(angle) * radius;
+      positions[i] = new PVector(x, y);
+    }
+
+    // Initialize Minim and FFT
+    minim = new Minim(this);
+    ab = minim.loadFile("experience.mp3", frameSize);
+    bands = new float[(int)log2(frameSize)];
+    smoothedBands = new float[bands.length];
+    colors = new float[bands.length];
+    waveform = new float[frameSize];
+
+    maxAmplitude = 0;
+    for (int i = 0; i < ab.size(); i++) {
+      float amplitude = abs(ab.get(i));
+      if (amplitude > maxAmplitude) {
+        maxAmplitude = amplitude;
+      }
+    }
+  }
+
+  public void draw() {
+    background(0);
+
+    // Calculate FFT and waveform
+    ab.forward();
+    for (int i = 0; i < bands.length; i++) {
+      bands[i] = ab.getBand(i);
+      smoothedBands[i] = lerp(smoothedBands[i], bands[i], 0.1f);
+      colors[i] = map(smoothedBands[i], 0, maxAmplitude, 0, 255);
+    }
+    ab.get(waveform);
+
+    // Draw spheres
+    translate(width/2, height/2);
+    strokeWeight(2);
+    noFill();
+    for (int i = 0; i < numSpheres; i++) {
+      float radius = map(smoothedBands[i % bands.length], 0, maxAmplitude, 50, 200);
+      stroke(colors[i % bands.length], colors[(i + 1) % bands.length], colors[(i + 2) % bands.length]);
+      pushMatrix();
+      translate(positions[i].x, positions[i].y, 0);
+      sphere(radius);
+      // Draw waveform inside sphere
+      beginShape();
+      for (int j = 0; j < waveform.length; j++) {
+        float x = map(j, 0, waveform.length, -radius, radius);
+        float y = map(waveform[j], -1, 1, -radius, radius);
+        float z = map(smoothedBands[i % bands.length], 0, maxAmplitude, -radius/2, radius/2);
+        stroke(colors[i % bands.length], colors[(i + 1) % bands.length], colors[(i + 2) % bands.length], 80);
+        vertex(x, y, z);
+      }
+      endShape();
+      popMatrix();
+    }
+  }
+
+  public void stop

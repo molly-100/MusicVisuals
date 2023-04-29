@@ -1,0 +1,126 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
+import processing.core.PApplet;
+import ddf.minim.analysis.BeatDetect;
+import ddf.minim.AudioPlayer;
+import ddf.minim.Minim;
+
+public class SpiralVisualizer extends PApplet {
+
+  private static final int CIRCLE_SIZE = 10;
+  private static final int MAX_SPEED = 5;
+  private static final int MAX_ROTATION_SPEED = 5;
+  private static final int MAX_COLOR_VALUE = 255;
+  
+  private AudioPlayer audioPlayer;
+  private BeatDetect beatDetector;
+  private List<Circle> circles;
+  
+  private float angle;
+  
+  public static void main(String[] args) {
+    PApplet.main("SpiralVisualizer");
+  }
+  
+  public void settings() {
+    size(800, 800);
+  }
+  
+  public void setup() {
+    background(0);
+    circles = new ArrayList<>();
+    Minim minim = new Minim(this);
+    audioPlayer = minim.loadFile("music.wav");
+    audioPlayer.play();
+    beatDetector = new BeatDetect(audioPlayer.bufferSize(), audioPlayer.sampleRate());
+    beatDetector.detectMode(BeatDetect.SOUND_ENERGY);
+    angle = 0;
+  }
+  
+  public void draw() {
+    if (beatDetector.isKick()) {
+      addCircle();
+    }
+    updateCircles();
+    render();
+  }
+  
+  private void addCircle() {
+    float x = width / 2 + (float) (200 * Math.cos(angle));
+    float y = height / 2 + (float) (200 * Math.sin(angle));
+    float speed = random(MAX_SPEED);
+    float rotationSpeed = random(MAX_ROTATION_SPEED);
+    int red = (int) random(MAX_COLOR_VALUE);
+    int green = (int) random(MAX_COLOR_VALUE);
+    int blue = (int) random(MAX_COLOR_VALUE);
+    circles.add(new Circle(x, y, CIRCLE_SIZE, new Color(red, green, blue), speed, rotationSpeed));
+    angle += 0.2;
+  }
+  
+  private void updateCircles() {
+    for (Circle circle : circles) {
+      circle.update();
+    }
+  }
+  
+  private void render() {
+    background(0);
+    for (Circle circle : circles) {
+      fill(circle.getColor().getRGB());
+      ellipse(circle.getX(), circle.getY(), circle.getSize(), circle.getSize());
+    }
+  }
+  
+  private class Circle {
+    private float x;
+    private float y;
+    private int size;
+    private Color color;
+    private float speed;
+    private float rotationSpeed;
+    private float rotationAngle;
+    
+    public Circle(float x, float y, int size, Color color, float speed, float rotationSpeed) {
+      this.x = x;
+      this.y = y;
+      this.size = size;
+      this.color = color;
+      this.speed = speed;
+      this.rotationSpeed = rotationSpeed;
+      this.rotationAngle = 0;
+    }
+    
+    public void update() {
+      x += speed * Math.cos(rotationAngle);
+      y += speed * Math.sin(rotationAngle);
+      rotationAngle += rotationSpeed;
+    }
+    
+    public float getX() {
+      return x;
+    }
+    
+    public float getY() {
+      return y;
+    }
+
+    public int getSize() {
+      return size;
+    }
+
+    public Color getColor() {
+      return color;
+    }
+}
+//// create a spiral made of circles - add new circle each time a beat occurs.
