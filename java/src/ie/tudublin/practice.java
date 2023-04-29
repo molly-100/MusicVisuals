@@ -21,6 +21,20 @@ public class practice extends Visual
         smooth();
     }
 
+    public void setup()
+    {
+        colorMode(HSB);
+        startMinim();
+        loadAudio("MusicVisuals/java/data/Victoria_Mon_t_ft_Khalid_-_Experience.mp3");
+        getAudioPlayer().play();
+    }
+
+    public void draw()
+    {
+        
+    }
+
+
     public void keyPressed() {
 		if (key >= '0' && key <= '9') {
 			mode = key - '0';
