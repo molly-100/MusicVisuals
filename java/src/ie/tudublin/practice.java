@@ -71,6 +71,7 @@ public class practice extends Visual
 
 class Star extends PApplet
 {
+
     PApplet p;
     float x;
     float y;
@@ -96,6 +97,28 @@ class Star extends PApplet
         this.stars = stars;
     }
 
+    
+    void update() 
+    {
+        y += speed;
+        rotate_Star += 0.01;
+        
+        if (y > height) {
+            y = 0;
+            x = p.random(width);
+            size = p.random(20, 200);
+            speed = p.random(1, 4);
+        } else if (y < 0) {
+            y = height;
+        }
+
+    }
+
+    int colorIndex = (int) random(3);
+    int[] colors = { color(230, 0, 255), color(255, 232, 31), color(255, 209, 220) };
+    int frameCount = 0;
+    int colorChangeInterval = 20; // Change color every 30 frames
+    
     void display(float[] bands) 
     {
         p.pushMatrix();
@@ -104,8 +127,18 @@ class Star extends PApplet
         p.scale(size/300);
         p.noStroke();
 
+
+        // Only change color every colorChangeInterval frames
+        if (frameCount % colorChangeInterval == 0) {
+            colorIndex = (colorIndex + 1) % colors.length;
+        }
+        frameCount++;
+
+        p.fill(colors[colorIndex]);
+
         p.beginShape();
 
+        num_point = (int) map(bands[4], 0, 255, 5, 10);
         for (int i = 0; i < num_point; i++) {
             float angle = TWO_PI * i / num_point;
             float x = cos(angle) * 100;
@@ -118,7 +151,7 @@ class Star extends PApplet
         }
         p.endShape();
         p.popMatrix();
-    }
+    } 
 
 }
 
