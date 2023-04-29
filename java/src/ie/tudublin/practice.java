@@ -14,6 +14,7 @@ public class practice extends Visual
     int mode = 0;
 
     FFT fft;
+    Star[] stars;
 
     public void settings()
     {
@@ -24,6 +25,15 @@ public class practice extends Visual
     public void setup()
     {
         colorMode(HSB);
+        stars = new Star[25];
+        for (int i = 0; i < stars.length; i++) 
+        {
+            float x = random(width);
+            float y = random(height);
+            float size = random(20, 100);
+            float speed = random(1, 5);
+            stars[i] = new Star(this, x, y, size, speed, height, width, stars);
+        }
         startMinim();
         loadAudio("MusicVisuals/java/data/Victoria_Mon_t_ft_Khalid_-_Experience.mp3");
         getAudioPlayer().play();
@@ -65,6 +75,14 @@ public class practice extends Visual
         }
         calculateFrequencyBands();
         bands = getSmoothedBands();
+
+        for (int i = 0; i < stars.length; i++) {
+            Star star = stars[i];
+            star.update();
+            float size = map(amplitude, 0, 1, 20, 200);
+            star.size = size;
+            star.display(bands);
+        }
     }
 
 }
