@@ -24,8 +24,8 @@ public class idea extends PApplet{
 float[] spectrum;
 
 //Star[] stars;
-int numStars = 300;
-int maxSpeed = 0;
+//int numStars = 100;
+//int maxSpeed = 0;
 
 public void keyPressed() {
     if (key >= '0' && key <= '9') {
@@ -41,14 +41,19 @@ public void keyPressed() {
     }
 }
 
+Star[] stars = new Star[500];
+float speed;
+
+
 public void settings()
     {
         size(1024, 1024);
     }
 
+//Star[] stars = new Star[numStars];
+
 public void setup() {
  
-  
   minim = new Minim(this);
   // Uncomment this to use the microphone
   // ai = minim.getLineIn(Minim.MONO, width, 44100, 16);
@@ -60,37 +65,39 @@ public void setup() {
   ab = ap.mix;
   colorMode(HSB);
   
-  stars = new Star[numStars];
-  for (int i = 0; i < numStars; i++) {
+  
+  for (int i = 0; i < stars.length; i++) {
     stars[i] = new Star();
   }
 }
 
 public void draw() {
+
+    speed = map(mouseX, 0, width, 0, 50);
+
     background(0);
 
     // ((Object) fft).analyze(spectrum);
 
     translate(width / 2, height / 2);
 
-    for (int i = 0; i < numStars; i++) {
-        Star s = stars[i];
-        s.update();
-        s.show();
-    }
+    for (int i = 0; i < stars.length; i++) {
+        stars[i].update();
+        stars[i].show();
+      }
 }
 
 class Star {
     float x, y, z;
     float pz;
-    float speed;
 
     Star() {
         x = random(-width, width);
         y = random(-height, height);
         z = random(width);
         pz = z;
-        speed = random(1, maxSpeed);
+       // speed = random(1, maxSpeed);
+       //speed = map(mouseX, 0, width, 0, 50);
     }
 
     void update() {
@@ -111,17 +118,17 @@ class Star {
         float sx = map(x / z, 0, 1, 0, width);
         float sy = map(y / z, 0, 1, 0, height);
 
-        float r = map(speed, 1, maxSpeed, 1, 8);
+        float r = map(z, 0, width/2, 16, 0);
 
         ellipse(sx, sy, r, r);
 
-        float px = map(x / pz, 0, 1, 0, width);
-        float py = map(y / pz, 0, 1, 0, height);
+        float px = map(x / pz, 0, 1, 0, width/2);
+        float py = map(y / pz, 0, 1, 0, height/2);
+
+        pz = z;
 
         stroke(255, 100);
         line(px, py, sx, sy);
-
-        pz = z;
     }
 }
 
