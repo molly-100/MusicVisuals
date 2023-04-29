@@ -29,12 +29,6 @@ public class practice extends Visual
         getAudioPlayer().play();
     }
 
-    public void draw()
-    {
-        
-    }
-
-
     public void keyPressed() {
 		if (key >= '0' && key <= '9') {
 			mode = key - '0';
@@ -48,6 +42,22 @@ public class practice extends Visual
             }
         }
 	}
+
+    public void draw()
+    {
+        background(0);
+        noFill();
+        noStroke();
+        float amplitude = 0;
+        frameRate(50);
+
+        calculateAverageAmplitude();
+        amplitude = getSmoothedAmplitude();
+        
+        calculateFFT();
+
+        calculateFrequencyBands();
+    }
 
 }
 
