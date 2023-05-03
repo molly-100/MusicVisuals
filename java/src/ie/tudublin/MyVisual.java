@@ -10,6 +10,7 @@ public class MyVisual extends Visual
 {    
     WaveForm wf;
     Idea h_idea2;
+    TestStar testStar;
     music_note mNote;
     //Idea h_idea;
     int mode = 1;
@@ -39,6 +40,7 @@ public class MyVisual extends Visual
          
         h_idea2 = new Idea(this);
         mNote = new music_note(this);
+        testStar = new TestStar(this, ab, ap);
         
         // Call this instead to read audio from the microphone
        // startListening(); 
@@ -87,6 +89,7 @@ public class MyVisual extends Visual
             case 2://When you press key 1 (hadassah)
                 //mNote.render();
                 System.out.print("in 2 ");
+                part_two();
                 break;
 
             case 3:// when you press key 2 (cece)
@@ -114,7 +117,6 @@ public class MyVisual extends Visual
 
     public void KeyPress()
     {
-        background(0);
         switch (key) 
         {
             case 1://first to play (grace)
@@ -167,5 +169,9 @@ public class MyVisual extends Visual
     void part_one()
     {
         h_idea2.render();
+    }
+
+    void part_two() {
+        testStar.render();
     }
 }

@@ -14,8 +14,8 @@ public abstract class Visual extends PApplet
 
 	private Minim minim;
 	private AudioInput ai;
-	private AudioPlayer ap;
-	private AudioBuffer ab;
+	protected AudioPlayer ap;
+	protected AudioBuffer ab;
 	private FFT fft;
 
 	private float amplitude  = 0;
@@ -26,7 +26,7 @@ public abstract class Visual extends PApplet
 	public void startMinim() 
 	{
 		minim = new Minim(this);
-		ap = minim.loadFile("MusicVisuals/java/data/Victoria_Mon_t_ft_Khalid_-_Experience.mp3");
+		ap = minim.loadFile("java/data/Victoria_Mon_t_ft_Khalid_-_Experience.mp3");
 		ap.play();
 		ab = ap.mix;
 		
