@@ -1,26 +1,21 @@
 package ie.tudublin;
 
-import jogamp.opengl.util.jpeg.JPEGDecoder.EXIF;
-
 public class Main
 {	
 
-	// public void startUI()
-	// {
-	// 	String[] a = {"MAIN"};
-    //     processing.core.PApplet.runSketch( a, new Idea());		
-	// }
-
-	public void exp(){
-
+	public static void startUI()
+	{
 		String[] a = {"MAIN"};
-		processing.core.PApplet.runSketch( a, new Experience());
+        processing.core.PApplet.runSketch( a, new MyVisual());		
+	}
+	public void discoBallUI()
+	{
+		String[] a = {"MAIN"};
+        processing.core.PApplet.runSketch( a, new DiscoBall());		
 	}
 
 	public static void main(String[] args)
 	{
-		Main main = new Main();
-		//main.startUI();
-		main.exp();			
+		startUI();		
 	}
 }
