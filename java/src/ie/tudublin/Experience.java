@@ -80,6 +80,7 @@
 //         background(0);
 //         // came up with an idea for an opening this is branch is for our ideas and rough work 
         
+
 //         switch (mode) {
 // 			//Opening :- shooting stars then sycadiics patterns to create the effect of 
 //             //someone hallucinating or in a trans with the words welcome to the expereiance appearing
@@ -87,6 +88,7 @@
            
 //         case 1://When you press key 1 (hadassah)
 //               partOne(); 
+
                     
 //             break;
 
