@@ -1,5 +1,6 @@
 package example;
 
+import ie.tudublin.MyVisual;
 import processing.core.*;
 
 // This is an example of a visual that uses the audio bands

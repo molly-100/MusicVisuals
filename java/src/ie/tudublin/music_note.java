@@ -4,31 +4,27 @@ import java.util.ArrayList;
 import processing.core.PApplet;
 import ddf.minim.*;
 import ddf.minim.analysis.FFT;
+import processing.core.PApplet;
+import processing.core.PConstants;
 
-public class music_note extends Visual
+public class music_note extends PApplet
 {
-    AudioPlayer ap;
-    AudioInput ai;
-    AudioBuffer ab;
-    float colour = 0;
-    int mode = 0;
+    // AudioPlayer ap;
+    // AudioInput ai;
+    // AudioBuffer ab;
+    // float colour = 0;
+    // int mode = 0;
+    MyVisual mv;
 
     FFT fft;
 
     Star[] stars;
-    
 
-    public void settings()
+
+    public music_note(MyVisual mv)
     {
-        size(1024,1024, P3D);
-        smooth();
-    }
+        this.mv = mv;
 
-    public void setup()
-    {
-        colorMode(HSB);
-
-        // create star objects
         stars = new Star[25];
         for (int i = 0; i < stars.length; i++) 
         {
@@ -38,34 +34,56 @@ public class music_note extends Visual
             float speed = random(1, 5);
             stars[i] = new Star(this, x, y, size, speed, height, width, stars);
         }
-        startMinim();
-        loadAudio("MusicVisuals/java/data/Victoria_Mon_t_ft_Khalid_-_Experience.mp3");
-        getAudioPlayer().play();
+
     }
+
+    public void render()
+    {
+        draw();
+        // System.out.print("here");
+    }
+    
+
+    // public void settings()
+    // {
+    //     size(1024,1024, P3D);
+    //     smooth();
+    // }
+
+    // public void setup()
+    // {
+    //     colorMode(HSB);
+
+
+    //     startMinim();
+    //     loadAudio("MusicVisuals/java/data/Victoria_Mon_t_ft_Khalid_-_Experience.mp3");
+    //     getAudioPlayer().play();
+    // }
 
  
     public void draw()
     {
-        background(0);
+        //background(0);
         float amplitude = 0;
         float[] bands;
-        frameRate(50);
+        //frameRate(50);
 
-        calculateAverageAmplitude();
-        amplitude = getSmoothedAmplitude();
+        //calculateAverageAmplitude();
+        
+        //amplitude = getSmoothedAmplitude();
 
         try
         {
-            calculateFFT();
+            mv.calculateFFT();
         }
         catch(VisualException e)
         {
             e.printStackTrace();
         }
-        calculateFrequencyBands();
-        bands = getSmoothedBands();
+        mv.calculateFrequencyBands();
+        bands = mv.getSmoothedBands();
     
-        pushMatrix();
+        mv.pushMatrix();
 
         // loop through al stars in the stars array
         for (int i = 0; i < stars.length; i++) 
@@ -77,13 +95,13 @@ public class music_note extends Visual
             star.display(bands);
         }
 
-        popMatrix();
+        mv.popMatrix();
         drawNotes(bands);
     }
 
     public void drawNotes(float[] bands)
     {
-        pushMatrix();
+        mv.pushMatrix();
         stroke(255);
         strokeWeight(4);
 
@@ -125,7 +143,7 @@ public class music_note extends Visual
         int noteY2 = noteY + staffSpacing;
 
         // Calculate the vertical position of the notes based on the amplitude
-        float amplitude = getSmoothedAmplitude();
+        float amplitude = mv.getSmoothedAmplitude();
         float yOffset = map(amplitude, 0, 1, -staffHeight/3, staffHeight/2);
 
         fill(colour, 255, 255);
@@ -152,7 +170,7 @@ public class music_note extends Visual
         // connect note
         line((noteX + noteDistance) * 2, staffY - staffHeight/2 + yOffset, noteX2 * 2, noteY - staffHeight/15 + yOffset);
 
-        popMatrix();
+        mv.popMatrix();
     }
 }
 
