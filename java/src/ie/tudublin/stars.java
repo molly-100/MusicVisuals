@@ -4,16 +4,14 @@ import java.util.ArrayList;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 import processing.core.PApplet;
+import processing.core.PConstants;
 
-public class stars extends PApplet {
+public class stars  {
 
-    Minim minim;
-    AudioPlayer player;
+   
     FFT fft;
 
-    AudioInput ai;
-    AudioBuffer ab;
-
+    
     Heart leftHeart;
     Heart rightHeart;
 
@@ -22,48 +20,50 @@ public class stars extends PApplet {
     float y = 0;
     float smoothedY = 0;
     float smoothedAmplitude = 0;
+    MyVisual mv;
+
+    float off = 0;
+
+    float lerpedBuffer[] = new float[1024];
 
     ArrayList<Particle> particles = new ArrayList<Particle>();
 
-    public void settings() {
-        size(1024, 1000, P3D);
-        // fullScreen(P3D, SPAN);
-    }
-
-    public void setup() {
-        start();
-
-        minim = new Minim(this);
-        player = minim.loadFile("MusicVisuals/java/data/Victoria_Mon_t_ft_Khalid_-_Experience.mp3", 512);
-        player.play();
-        ab = player.mix;
-
-        fft = new FFT(player.bufferSize(), player.sampleRate());
+    // public void settings() {
+    //     size(1024, 1000);
+    //     // fullScreen(P3D, SPAN);
+    // }
+    
+    public stars(MyVisual mv)
+    {
+        this.mv = mv;
 
         for (int i = 0; i < 100; i++) {
             Particle p = new Particle();
             particles.add(p);
         }
 
-        y = height / 2;
+        y = mv.height / 2;
         smoothedY = y;
 
         // Create the left and right hearts
-        leftHeart = new Heart(width * 0.2f, height / 2, 10, color(255, 0, 0));
-        rightHeart = new Heart(width * 0.8f, height / 2, 10, color(255, 0, 0));
+        leftHeart = new Heart(mv.width * 0.2f, mv.height / 2, 10, mv.color(255, 0, 0));
+        rightHeart = new Heart(mv.width * 0.8f, mv.height / 2, 10, mv.color(255, 0, 0));
 
     }
 
-    float off = 0;
+    public void render(){
+        draw();
+    }
 
-    float lerpedBuffer[] = new float[1024];
+
+    
 
     void drawDaisy() {
 
    
         // Set the center point of the daisy
-        float centerX = width / 2;
-        float centerY = height / 2;
+        float centerX = mv.width / 2;
+        float centerY = mv.height / 2;
         float average = 0;
         float sum = 0;
 
@@ -73,102 +73,113 @@ public class stars extends PApplet {
         float daisySize = 200;
 
         // Calculate sum and average of the samples
-        for (int i = 0; i < ab.size(); i++) {
-            sum += abs(ab.get(i));
+        for (int i = 0; i < mv.ab.size(); i++) {
+            sum += MyVisual.abs(mv.ab.get(i));
         }
-        average = sum / (float) ab.size();
-        smoothedAmplitude = lerp(smoothedAmplitude, average, 0.2f);
+        average = sum / (float) mv.ab.size();
+        smoothedAmplitude = MyVisual.lerp(smoothedAmplitude, average, 0.2f);
 
         // Map the amplitude value to a range of values that will control the size of
         // the center circle
-        float size = map(smoothedAmplitude, 0, 1, 130, 800);
+        float size = MyVisual.map(smoothedAmplitude, 0, 1, 130, 800);
 
         // Set the color of the daisy
-        fill(255, 255, 0); // yellow
+        mv.fill(255, 255, 0); // yellow
 
         // Draw the center of the daisy with the mapped size value
-        ellipse(centerX, centerY, size, size);
+        mv.ellipse(centerX, centerY, size, size);
 
         // Draw the petals of the daisy
-        fill(255, 255, 255); // white
+        mv.fill(255, 255, 255); // white
         for (int i = 0; i < 6; i++) {
-            float angle = i * TWO_PI / 6;
-            float petalX = centerX + cos(angle) * (daisySize / 2);
-            float petalY = centerY + sin(angle) * (daisySize / 2);
-            pushMatrix();
-            translate(petalX, petalY);
-            rotate(angle);
-            ellipse(0, 0, 110, 100);
-            popMatrix();
+            float angle = i * PConstants.TWO_PI / 6;
+            float petalX = centerX + MyVisual.cos(angle) * (daisySize / 2);
+            float petalY = centerY + MyVisual.sin(angle) * (daisySize / 2);
+            mv.pushMatrix();
+            mv.translate(petalX, petalY);
+            mv.rotate(angle);
+            mv.ellipse(0, 0, 110, 100);
+            mv.popMatrix();
         }
 
         // Set the color of the daisy
-        fill(255, 255, 0); // yellow
+        mv.fill(255, 255, 0); // yellow
 
         // Draw the center of the daisy with the mapped size value
-        ellipse(centerX, centerY, 130, 130);
+        mv.ellipse(centerX, centerY, 130, 130);
 
         // Set the color and stroke for the smile
         // Draw the smile
-        strokeWeight(5);
-        stroke(0);
-        noFill();
-        arc(centerX, centerY + 25, 60, 60, 0, PI);
+        mv.strokeWeight(5);
+        mv.stroke(0);
+        mv.noFill();
+        mv.arc(centerX, centerY + 25, 60, 60, 0, PConstants.PI);
 
         // Draw the eyes
-        fill(0);
-        noStroke();
-        ellipse(centerX - 25, centerY - 10, 20, 20);
-        ellipse(centerX + 25, centerY - 10, 20, 20);
+        mv.fill(0);
+        mv.noStroke();
+        mv.ellipse(centerX - 25, centerY - 10, 20, 20);
+        mv.ellipse(centerX + 25, centerY - 10, 20, 20);
 
         // blush
-        fill(255, 192, 203);
-        noStroke();
-        ellipse(centerX - 35, centerY + 9, 15, 10);
-        ellipse(centerX + 35, centerY + 9, 15, 10);
+        mv.fill(255, 192, 203);
+        mv.noStroke();
+        mv.ellipse(centerX - 35, centerY + 9, 15, 10);
+        mv.ellipse(centerX + 35, centerY + 9, 15, 10);
     }
 
     void drawstem() {
-        pushMatrix(); // save the current coordinate system
-        float halfH = (height / 2) + 65;
-        float halfW = (width / 2);
+        mv.pushMatrix(); // save the current coordinate system
+        float halfH = (mv.height / 2) + 65;
+        float halfW = (mv.width / 2);
         float average = 0;
         float sum = 0;
         off += 1;
 
         // Calculate sum and average of the samples
         // Also lerp each element of buffer;
-        for (int i = 0; i < ab.size(); i++) {
-            sum += abs(ab.get(i));
-            lerpedBuffer[i] = lerp(lerpedBuffer[i], ab.get(i), 0.1f);
+        for (int i = 0; i < mv.ab.size(); i++) {
+            sum += MyVisual.abs(mv.ab.get(i));
+            lerpedBuffer[i] = MyVisual.lerp(lerpedBuffer[i], mv.ab.get(i), 0.1f);
         }
-        average = sum / (float) ab.size();
+        average = sum / (float) mv.ab.size();
 
-        smoothedAmplitude = lerp(smoothedAmplitude, average, 0.1f);
+        smoothedAmplitude = MyVisual.lerp(smoothedAmplitude, average, 0.1f);
 
-        for (int i = 0; i < ab.size(); i++) {
+        for (int i = 0; i < mv.ab.size(); i++) {
             float x = halfW - (lerpedBuffer[i] * halfH * 0.5f);
-            float y = map(i, 0, ab.size(), halfH, height);
-            stroke(map(i, 0, ab.size(), 0, 255), 252, 0);
-            line(halfW, y, x, y);
+            float y = MyVisual.map(i, 0, mv.ab.size(), halfH, mv.height);
+            mv.stroke(MyVisual.map(i, 0, mv.ab.size(), 0, 255), 252, 0);
+            mv.line(halfW, y, x, y);
         }
-        popMatrix(); // restore the previous coordinate system
+        mv.popMatrix(); // restore the previous coordinate system
     }
 
     public void draw() {
-        background(0);
+        mv.background(0);
+
+        float[] arr;
+
+
         drawDaisy();
         drawstem();	
         
       
 
-        fft.forward(player.mix);
+        try {
+            mv.calculateFFT();
+        } catch (VisualException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        arr = mv.getSmoothedBands();
 
         // maintain a variable number of particles between 10 and 20
         int minParticles = 10;
         int maxParticles = 20;
         int numParticles = particles.size();
-        int targetParticles = (int) map(fft.getBand(20), 0, 1, minParticles, maxParticles);
+        int targetParticles = (int) MyVisual.map(arr[8], 0, 1, minParticles, maxParticles);
         if (numParticles < targetParticles) {
             for (int i = 0; i < targetParticles - numParticles; i++) {
                 Particle p = new Particle();
@@ -200,35 +211,48 @@ public class stars extends PApplet {
         int color;
 
         Particle() {
-            x = random(width);
-            y = random(height);
-            vx = random(-1, 1);
+            x = mv.random(mv.width);
+            y = mv.random(mv.height);
+            vx = mv.random(-1, 1);
             vy = 4; // set the falling speed to a constant value of 2
-            size = random(10, 20);
-            color = color(random(255), random(255), random(255));
+            size = mv.random(10, 20);
+            color = mv.color(mv.random(255), mv.random(255), mv.random(255));
         }
 
         void update() {
             x += vx;
             y += vy;
 
-            if (y > height) {
+            if (y > mv.height) {
                 y = 0;
             }
         }
 
         void draw() {
-            int index = (int) map(x, 100, width, 100, fft.specSize());
-            float amplitude = fft.getBand(index);
+
+            float[] arr;
+
+            try {
+                mv.calculateFFT();
+            } catch (VisualException e) 
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+    
+            arr = mv.getSmoothedBands();
+
+            int index = (int) MyVisual.map(x, 100, mv.width, 100, arr[5]);
+            float amplitude = arr[index % 10];
 
             size = amplitude * 70;
             // limit the maximum size
             if (size > 50) {
                 size = 50;
             }
-            fill(color);
-            noStroke();
-            ellipse(x, y, size, size);
+            mv.fill(color);
+            mv.noStroke();
+            mv.ellipse(x, y, size, size);
         }
     }
     class Heart {
@@ -245,19 +269,19 @@ public class stars extends PApplet {
         
         void draw() {
           // Draw the heart shape using bezier curves
-          smooth();
-          noStroke();
-          fill(color);
-          beginShape();
-          vertex(x, y);
-          bezierVertex(x - size * 1, y - size * 2, x - size * 3, y + size / 2, x, y + size * 2);
-          bezierVertex(x + size * 3, y + size / 2, x + size * 1, y - size * 2, x, y);
-          endShape();
+          mv.smooth();
+          mv.noStroke();
+          mv.fill(color);
+          mv.beginShape();
+          mv.vertex(x, y);
+          mv.bezierVertex(x - size * 1, y - size * 2, x - size * 3, y + size / 2, x, y + size * 2);
+          mv.bezierVertex(x + size * 3, y + size / 2, x + size * 1, y - size * 2, x, y);
+          mv.endShape();
         }
         
         void update(float amplitude) {
           // Map the amplitude value to a range of values that will control the size of the heart
-          size = map(amplitude, 0, 1, 25, 100);
+          size = MyVisual.map(amplitude, 0, 1, 25, 100);
         }
       }
 }

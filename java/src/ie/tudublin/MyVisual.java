@@ -10,7 +10,7 @@ public class MyVisual extends Visual
 {    
     WaveForm wf;
     Idea h_idea2;
-    TestStar testStar;
+    stars s;
     music_note mNote;
     //Idea h_idea;
     int mode = 1;
@@ -40,7 +40,7 @@ public class MyVisual extends Visual
          
         h_idea2 = new Idea(this);
         mNote = new music_note(this);
-        testStar = new TestStar(this, ab, ap);
+        s = new stars(this);
         
         // Call this instead to read audio from the microphone
        // startListening(); 
@@ -82,19 +82,19 @@ public class MyVisual extends Visual
         switch (mode) 
         {
 			case 1://first to play (grace)
-                System.out.print("in 1");
+           
                 part_one();
-                //mNote.render();
+                
                     break;
             case 2://When you press key 1 (hadassah)
-                //mNote.render();
-                System.out.print("in 2 ");
+             
                 part_two();
+                
                 break;
 
             case 3:// when you press key 2 (cece)
         
-        
+               part_three();
 
                 break;
 
@@ -111,58 +111,6 @@ public class MyVisual extends Visual
 
         }
         
-        KeyPress();
-
-    }
-
-    public void KeyPress()
-    {
-        switch (key) 
-        {
-            case 1://first to play (grace)
-                mode = 1;
-                    break;
-            case 2://When you press key 1 (hadassah)
-                mode = 2;
-                        
-                break;
-
-            case 3:// when you press key 2 (cece)
-        
-                mode = 3;
-
-                break;
-
-            case 4://when you press key 3 (molly)
-
-                mode  = 4;
-                break;
-
-            case 5://when you press key 4 (aisha)
-
-                mode = 5;
-                break;
-
-            default:
-                break;
-            
-        }
-        // try
-        // {
-        //     // Call this if you want to use FFT data
-        //     calculateFFT(); 
-        // }
-        // catch(VisualException e)
-        // {
-        //     e.printStackTrace();
-        // }
-        // // Call this is you want to use frequency bands
-        // calculateFrequencyBands(); 
-
-        // // Call this is you want to get the average amplitude
-        // calculateAverageAmplitude();        
-        // wf.render();
-        // //abv.render();
     }
 
 
@@ -171,7 +119,14 @@ public class MyVisual extends Visual
         h_idea2.render();
     }
 
-    void part_two() {
-        testStar.render();
+    void part_two()
+    {
+        mNote.render();
     }
+
+    void part_three()
+    {
+        s.render();
+    }
+
 }

@@ -89,7 +89,7 @@ public class Idea
     {
         //speed = map(mouseX, 0, width, 0, 50);
 
-        mv.background(255);
+        mv.background(0);
 
         mv.translate(mv.width / 2, mv.height / 2);
 
