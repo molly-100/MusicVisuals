@@ -76,7 +76,7 @@ public class Experience extends Visual{
             
             idea.render();
           
-                
+                toot haudghydgai a
                 break;
         case 1://When you press key 1 (hadassah)
                
