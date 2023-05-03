@@ -1,7 +1,7 @@
 package ie.tudublin;
 
 
-
+// dont need to iniatate the objects as they are all present in visual 
 
 import ddf.minim.AudioBuffer;
 import ddf.minim.AudioInput;
@@ -10,14 +10,14 @@ import ddf.minim.Minim;
 import ddf.minim.analysis.FFT;
 import processing.core.PApplet;
 
-public class Experiance extends PApplet{
+public class Experience extends Visual{
 
     Minim minim;
     AudioPlayer ap;
     AudioInput ai;
     AudioBuffer ab;
 
-  
+    Idea idea;//call the file  and name the file 
 
     FFT fft;
 
@@ -57,19 +57,24 @@ public class Experiance extends PApplet{
         ap.play();
         ab = ap.mix;
         colorMode(HSB);
+
+        idea = new Idea(this);
+
+        
     }
 
     public void draw()
     {
-
+        background(0);
         // came up with an idea for an opening this is branch is for our ideas and rough work 
         
         switch (mode) {
 			case 0://Opening :- shooting stars then sycadiics patterns to create the effect of 
             //someone hallucinating or in a trans with the words welcome to the expereiance appearing
             //stars shooting then the words welcome to the experiance appear like a start buttton  
-
+            background(0);
             
+            idea.render();
           
                 
                 break;
