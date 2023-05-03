@@ -143,4 +143,6 @@ public abstract class Visual extends PApplet
 	public FFT getFFT() {
 		return fft;
 	}
+
+	
 }

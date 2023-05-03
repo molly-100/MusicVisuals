@@ -7,8 +7,9 @@ public class MyVisual extends Visual
     WaveForm wf;
    // AudioBandsVisual abv;
 
-    public MyVisual(stars stars) {
-	}
+    Idea idea;
+
+    int mode = 1;
 
 	public void settings()
     {
@@ -26,11 +27,12 @@ public class MyVisual extends Visual
         startMinim();
                 
         // Call loadAudio to load an audio file to process 
-        //loadAudio("heroplanet.mp3");   
+        loadAudio("MusicVisuals/java/data/Victoria_Mon_t_ft_Khalid_-_Experience.mp3");  
+         
 
         
         // Call this instead to read audio from the microphone
-        startListening(); 
+       // startListening(); 
         
        // wf = new WaveForm(this);
        // abv = new AudioBandsVisual(this);

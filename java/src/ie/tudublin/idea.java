@@ -8,7 +8,7 @@ import ddf.minim.analysis.FFT;
 import processing.core.PApplet;
 
 
-public class Idea extends Visual{ 
+public class Idea extends Visual{{ 
 
     class Star {
         float x, y, z;
@@ -79,8 +79,7 @@ Star[] stars = new Star[500];
 
 float speed = 50;
 
-for (int i = 0; i < stars.length; i++) {
-    stars[i] = new Star();
+
 
 public Idea (Experience ex){
     this.ex = ex;
@@ -106,10 +105,12 @@ public void setup() {
 //   ab = ap.mix;
 //   colorMode(HSB);
   
+    for (int i = 0; i < stars.length; i++) {
+        stars[i] = new Star();
+    }
   
-  
-  }
 }
+
 
 
 
@@ -136,5 +137,4 @@ public void render() {
     translate(-width / 2, -height / 2);
 
 }
-
 }
