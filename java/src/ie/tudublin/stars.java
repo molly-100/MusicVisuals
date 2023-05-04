@@ -161,8 +161,7 @@ public class stars  {
         float[] arr;
 
 
-        drawDaisy();
-        drawstem();	
+        
         
       
 
@@ -195,6 +194,9 @@ public class stars  {
             p.draw();
         }
 
+        drawDaisy();
+        drawstem();	
+
       // Update the left and right hearts based on the audio amplitude
   leftHeart.update(smoothedAmplitude);
   rightHeart.update(smoothedAmplitude);
@@ -216,7 +218,7 @@ public class stars  {
             vx = mv.random(-1, 1);
             vy = 4; // set the falling speed to a constant value of 2
             size = mv.random(10, 20);
-            color = mv.color(mv.random(255), mv.random(255), mv.random(255));
+            color = mv.color(mv.random(255), mv.random(150), mv.random(255));
         }
 
         void update() {
@@ -232,18 +234,19 @@ public class stars  {
 
             float[] arr;
 
-            try {
-                mv.calculateFFT();
-            } catch (VisualException e) 
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            // try {
+            //     mv.calculateFFT();
+            // } catch (VisualException e) 
+            // {
+            //     // TODO Auto-generated catch block
+            //     e.printStackTrace();
+            // }
     
             arr = mv.getSmoothedBands();
 
-            int index = (int) MyVisual.map(x, 100, mv.width, 100, arr[5]);
-            float amplitude = arr[index % 10];
+             float amplitude = (int) MyVisual.map(x, 100, mv.width, 100, arr[5]);
+            //int index = (int) MyVisual.map(x, 100, mv.width, 100, arr.length > 50 ? arr[50] : 0);
+            //float amplitude = arr[index % 5];
 
             size = amplitude * 70;
             // limit the maximum size
