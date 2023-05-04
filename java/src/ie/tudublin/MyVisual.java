@@ -11,7 +11,9 @@ public class MyVisual extends Visual
     DiscoBall db;
     Half hj;
     SpinningSpheres ss;
+    MP3 mp3;
     int mode = 1;
+
     public Object song;
 
 	public void settings()
@@ -30,12 +32,13 @@ public class MyVisual extends Visual
         db = new DiscoBall(this);
         hj = new Half(this);
         ss = new SpinningSpheres(this);
+        mp3 = new MP3(this);
 
     }
 
     public void keyPressed()
     {
-        if(key >= '0' && key <= '6')
+        if(key >= '0' && key <= '7')
         {
             mode = key - '0';
         }
@@ -85,6 +88,10 @@ public class MyVisual extends Visual
                 part_six();
                 break;
 
+            case 7://when you press key 4 (aisha)
+
+                part_seven();
+                break;
             default:
                 break;
 
@@ -178,6 +185,22 @@ public class MyVisual extends Visual
          }
          calculateFrequencyBands();
          ss.render();
+
+    }
+
+    void part_seven()
+    {
+        // try {
+        //     calculateFFT();
+        // } 
+        
+        // catch (VisualException e) 
+        // {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        //  }
+        //  calculateFrequencyBands();
+         mp3.render();
 
     }
     
