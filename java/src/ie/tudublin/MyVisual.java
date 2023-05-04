@@ -1,10 +1,6 @@
 package ie.tudublin;
 
-import java.security.Key;
-import ie.tudublin.Idea;
-
 import example.WaveForm;
-import ie.tudublin.*;
 
 public class MyVisual extends Visual
 {    
@@ -13,46 +9,27 @@ public class MyVisual extends Visual
     stars s;
     music_note mNote;
     DiscoBall db;
-    //Idea h_idea;
+    Half hj;
+    SpinningSpheres ss;
     int mode = 1;
-   // AudioBandsVisual abv;
-
-    // public MyVisual() {
-	// }
+    public Object song;
 
 	public void settings()
     {
-        size(1024, 700,P3D);
-        //h_idea2 = new Idea();
-        
-        // Use this to make fullscreen
-        //fullScreen();
-
-        // Use this to make fullscreen and use P3D for 3D graphics
-        //fullScreen(P3D, SPAN); 
+        fullScreen(P3D, SPAN);
     }
 
     public void setup()
     {
         startMinim();
-                
-        // Call loadAudio to load an audio file to process 
-        //loadAudio("MusicVisuals/java/data/Victoria_Mon_t_ft_Khalid_-_Experience.mp3");  
+        //colorMode(HSB);
          
         h_idea2 = new Idea(this);
         mNote = new music_note(this);
         s = new stars(this);
         db = new DiscoBall(this);
-        
-        // Call this instead to read audio from the microphone
-       // startListening(); 
-        
-       // wf = new WaveForm(this);
-       // abv = new AudioBandsVisual(this);
-
-        //    for (int i = 0; i < stars.length; i++) {
-        //         stars[i] = new Star();
-        //    }
+        hj = new Half(this);
+        ss = new SpinningSpheres(this);
 
     }
 
@@ -69,14 +46,6 @@ public class MyVisual extends Visual
         }
     }
 
-    // public void keyPressed()
-    // {
-    //     if (key == ' ')
-    //     {
-    //         getAudioPlayer().cue(0);
-    //         getAudioPlayer().play();
-    //     }
-    // }
 
     @Override
     public void draw()
@@ -86,13 +55,11 @@ public class MyVisual extends Visual
 			case 1://first to play (grace)
            
                 part_one();
-                System.out.println("in 1 ");
                 
                     break;
             case 2://When you press key 1 (hadassah)
              
                 part_two();
-                System.out.println("in 2 ");
                 
                 break;
 
@@ -110,6 +77,12 @@ public class MyVisual extends Visual
 
             case 5://when you press key 4 (aisha)
 
+                part_five();
+                break;
+            
+            case 6://when you press key 4 (aisha)
+
+                part_six();
                 break;
 
             default:
@@ -136,7 +109,7 @@ public class MyVisual extends Visual
             e.printStackTrace();
         }
         calculateFrequencyBands();
-        colorMode(HSB, 360, 100, 100);
+        // colorMode(HSB, 360, 100, 100);
         mNote.render();
     }
 
@@ -153,6 +126,7 @@ public class MyVisual extends Visual
                 e.printStackTrace();
              }
              calculateFrequencyBands();
+             
              s.render();
        
     }
@@ -170,12 +144,42 @@ public class MyVisual extends Visual
                 e.printStackTrace();
              }
              calculateFrequencyBands();
-             db.render();
+             //colorMode(HSB, 360, 100, 100); 
+            db.render();
        
     }
 
+    void part_five()
+    {
+        try {
+            calculateFFT();
+        } 
+        
+        catch (VisualException e) 
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+         }
+         calculateFrequencyBands();
+         hj.render();
+
+    }
+
+    void part_six()
+    {
+        try {
+            calculateFFT();
+        } 
+        
+        catch (VisualException e) 
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+         }
+         calculateFrequencyBands();
+         ss.render();
+
+    }
     
-
-
 }
 

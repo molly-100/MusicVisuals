@@ -81,7 +81,7 @@ public class stars  {
 
         // Map the amplitude value to a range of values that will control the size of
         // the center circle
-        float size = MyVisual.map(smoothedAmplitude, 0, 1, 130, 800);
+        float size = MyVisual.map(smoothedAmplitude, 0, 1, 180, 800);
 
         // Set the color of the daisy
         mv.fill(255, 255, 0); // yellow
@@ -244,14 +244,14 @@ public class stars  {
     
             arr = mv.getSmoothedBands();
 
-             float amplitude = (int) MyVisual.map(x, 100, mv.width, 100, arr[5]);
+             float amplitude = (int) MyVisual.map(x, 100, mv.width, 100, arr[8]);
             //int index = (int) MyVisual.map(x, 100, mv.width, 100, arr.length > 50 ? arr[50] : 0);
             //float amplitude = arr[index % 5];
 
-            size = amplitude * 70;
+            size = amplitude * 50;
             // limit the maximum size
-            if (size > 50) {
-                size = 50;
+            if (size > 40) {
+                size = 40;
             }
             mv.fill(color);
             mv.noStroke();
@@ -284,7 +284,7 @@ public class stars  {
         
         void update(float amplitude) {
           // Map the amplitude value to a range of values that will control the size of the heart
-          size = MyVisual.map(amplitude, 0, 1, 25, 100);
+          size = MyVisual.map(amplitude, 0, 1, 80, 150);
         }
       }
 }

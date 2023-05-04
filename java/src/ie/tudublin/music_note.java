@@ -24,16 +24,19 @@ public class music_note
     public music_note(MyVisual mv)
     {
         this.mv = mv;
+        // colorMode(HSB, 360, 100, 100);
 
-        stars = new Star[25];
+        mv.pushMatrix();
+        stars = new Star[50];
         for (int i = 0; i < stars.length; i++) 
         {
-            float x = mv.random(mv.width);
-            float y = mv.random(mv.height);
+            float x = mv.random(mv.width - 100) + 50;
+            float y = mv.random(mv.height - 100) + 50;
             float size = mv.random(20, 100);
             float speed = mv.random(1, 5);
             stars[i] = new Star(mv, x, y, size, speed, mv.height, mv.width, stars);
         }
+        mv.popMatrix();
 
     }
 
@@ -90,12 +93,12 @@ public class music_note
     
         mv.pushMatrix();
 
-        // loop through al stars in the stars array
+        // loop through all stars in the stars array
         for (int i = 0; i < stars.length; i++) 
         {
             Star star = stars[i];
             star.update();
-            float size = MyVisual.map(bands[2], 0, 255, 20, 60);
+            float size = MyVisual.map(bands[2], 0, 255, 20, 100);
             star.size = size;
             star.update();
             star.display(bands);
@@ -142,7 +145,7 @@ public class music_note
         // for drawing the staff on the screen
         mv.strokeWeight(1);
         for (int i = 0; i < 5; i++) {
-            int y = staffY - (2 * staffHeight/5) + (i * staffHeight/5);
+            int y = staffY - (2 * staffHeight/5) + (i * staffHeight/4);
             mv.line(staffX, y, staffX + staffWidth, y);
         }
 
@@ -170,25 +173,29 @@ public class music_note
 
         // draw first note
         mv.ellipse(noteX + noteDistance/3 - 10, noteY2 + yOffset + noteSize, noteSize, noteSize);
-        mv.line(noteX + noteDistance/3 + 10, noteY2 + yOffset + noteSize, noteX + noteDistance/3 + 10, staffY - staffHeight/7 + yOffset);
+        mv.line(noteX + noteDistance/3 + 27, noteY2 + yOffset + noteSize, noteX + noteDistance/3 + 27, staffY - staffHeight/7 + yOffset);
 
         mv.ellipse(noteX2, noteY + (noteDistance/2 + 30) + yOffset, noteSize, noteSize);
-        mv.line(noteX2 + 20, noteY + (noteDistance/2 + 30) + yOffset, noteX2 + 20, staffY - staffHeight/5 + yOffset);
+        mv.line(noteX2 + 40, noteY + (noteDistance/2 + 30) + yOffset, noteX2 + 40, staffY - staffHeight/5 + yOffset);
 
         // connect note
-        mv.line(noteX + noteDistance/3 + 10, staffY - staffHeight/7 + yOffset, noteX2 + 20, staffY - staffHeight/5 + yOffset);
+        mv.line(noteX + noteDistance/3 + 27, staffY - staffHeight/7 + yOffset, noteX2 + 40, staffY - staffHeight/5 + yOffset);
 
         // another note
         mv.fill(colour, 255, 255);
         
-        mv.ellipse((noteX2 - 10) * 2, noteY + (noteDistance + noteSize/35) + yOffset, noteSize, noteSize);
-        mv.line(noteX2 * 2, noteY + (noteDistance + noteSize/35) +  yOffset, noteX2 * 2, noteY - staffHeight/15 + yOffset);
+        mv.ellipse((noteX2 + 30) * 2, noteY + (noteDistance + noteSize/35) + yOffset, noteSize, noteSize);
+        mv.line((noteX2 + 49) * 2, noteY + (noteDistance + noteSize/35) +  yOffset, (noteX2 + 49) * 2, noteY - staffHeight/15 + yOffset);
 
-        mv.ellipse((noteX + noteDistance - 30) * 2, noteY2 - (noteDistance - noteY/8) + yOffset, noteSize, noteSize);
-        mv.line((noteX + noteDistance - 20) * 2, noteY2 - (noteDistance - noteY/8) + yOffset, (noteX + noteDistance - 20) * 2, staffY - staffHeight/2 + yOffset);
+        // first circle
+        mv.ellipse((noteX + noteDistance - 30) * 2, noteY2 - (noteDistance - noteSize*2) + yOffset, noteSize, noteSize);
+        mv.line((noteX + noteDistance - 12) * 2, noteY2 - (noteDistance - noteY/3 + 40) + yOffset, (noteX + noteDistance - 12) * 2, staffY - staffHeight/2 + yOffset);
 
         // connect note
-        mv.line((noteX + noteDistance - 20) * 2, staffY - staffHeight/2 + yOffset, noteX2 * 2, noteY - staffHeight/15 + yOffset);
+        mv.line((noteX + noteDistance - 12) * 2, staffY - staffHeight/2 + yOffset, (noteX2 + 50) * 2, noteY - staffHeight/15 + yOffset);
+
+        mv.ellipse((noteX + noteDistance) * 3, noteY2 - (noteDistance - noteSize*3) + yOffset, noteSize, noteSize);
+        mv.line((noteX + noteDistance + 12) * 3, noteY2 - (noteDistance - noteY/2 + 40) + yOffset, (noteX + noteDistance + 12) * 3, staffY - staffHeight/3 + yOffset);
 
         mv.popMatrix();
     }

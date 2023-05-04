@@ -1,23 +1,9 @@
-
-
-
 package ie.tudublin;
 
-import ddf.minim.AudioBuffer;
-import ddf.minim.AudioInput;
-import ddf.minim.AudioPlayer;
-import ddf.minim.AudioSource;
-import ddf.minim.Minim;
 import ddf.minim.analysis.FFT;
-import jogamp.opengl.glu.nurbs.Curve;
-import processing.core.PApplet;
 
 public class DiscoBall  {
 
-  // Minim minim;
-  // AudioPlayer ap;
-  // AudioInput ai;
-  // AudioBuffer ab;
   FFT fft;
 
   MyVisual mv;
@@ -27,16 +13,11 @@ public class DiscoBall  {
   float rotationSpeed = (float) 0.01;
   float[] FFT_g;
     
-    
-
-
-
 
   public DiscoBall(MyVisual mv) {
 
      this.mv = mv;
    
-   // fft = new FFT(mv.ab.size(), ((AudioSource) mv.ap).sampleRate());
     
   }
 
@@ -78,25 +59,15 @@ public class DiscoBall  {
     mv.translate(mv.width/2, mv.height/2, 0); // Move the sphere to the center of the screen
     float angle = (float) (mv.frameCount * 0.01); // Use a fixed rotation speed based on frame count
     mv.rotateY(angle); // Rotate the sphere based on the angle
-  
-    //fft = new FFT(mv.ap.bufferSize(), mv.ap.sampleRate()); // Initialize FFT with the audio buffer size and sample rate
-    //fft.forward(mv.ab); // Perform FFT on the audio buffer
-    float[] spectrum = fft.getSpectrumImaginary(); // Get frequency spectrum data
-  
 
-    float sum = 0;
-
-    for (int i = 0; i < spectrum.length; i++) {
-
-      sum += spectrum[i]; // Calculate the sum of all frequency values
-
-    }
-    float average = sum / spectrum.length; // Calculate the average frequency value
-  
-    rotationSpeed = map2(average, 0, 255, 0.001, 0.1); // Map the average frequency value to a rotation speed range
+    float rotationSpeed = map2(mv.frameCount, 0, 1000, 0.001, 0.1); // Map the frame count to a rotation speed range
     mv.rotateY(rotationSpeed * mv.frameCount); // Rotate the sphere based on the current frame count and rotation speed
+
   
-    // set the thickness of the lines in the disco ball
+    rotationSpeed = map2(mv.frameCount, 0, 1000, 0.001, 0.1); // Map the frame count to a rotation speed range
+    mv.rotateY(rotationSpeed * mv.frameCount); // Rotate the sphere based on the current frame count and rotation speed
+
+    
     mv.stroke(204,204,255); 
     mv.strokeWeight((float) 3.5); // sets the thickness of lines in the disco Ball
     mv.line(0, -250, 0, 0);
@@ -161,7 +132,6 @@ public class DiscoBall  {
   
       mv.fill(r, 0, 0);
       mv.stroke(r, 0, 0);
-      //mv.strokeWeight(2);
       //left half of heart
       mv.beginShape();
       mv.curveVertex(heartX, heartBottomY+heartSize); //anchor point
@@ -184,9 +154,6 @@ public class DiscoBall  {
       
     }
 
-
-
-    
 
   }
 
